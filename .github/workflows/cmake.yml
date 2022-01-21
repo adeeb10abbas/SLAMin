@@ -16,4 +16,4 @@ jobs:
     - uses: actions/checkout@v2
     - name: Build
       # Build your program with the given configuration
-      run: cmake --build ${{github.workspace}}/build --config Debug --target slam -j 14
+      run: cmake --build --config Debug --target slam -j 14
