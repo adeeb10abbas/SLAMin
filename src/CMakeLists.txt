@@ -10,22 +10,19 @@ project(SLAMin)
 # to the absolute path to the directory containing OpenCVConfig.cmake file
 # via the command line or GUI
 find_package(OpenCV REQUIRED)
-find_package(SFML 2.5 COMPONENTS graphics window system REQUIRED)
-# If the package has been found, several variables will
-# be set, you can find the full list with descriptions
-# in the OpenCVConfig.cmake file.
-# Print some message showing some of them
+
 message(STATUS "OpenCV library status:")
 message(STATUS "version: ${OpenCV_VERSION}")
 message(STATUS "libraries: ${OpenCV_LIBS}")
 message(STATUS "include path: ${OpenCV_INCLUDE_DIRS}")
 
-add_subdirectory(src)
+add_subdirectory(feature_extraction)
 
+set(slam_source_files main.cpp)
 # Declare the executable target built from your sources
-# add_executable(slam "src/main.cpp")
+add_executable(slam ${slam_source_files})
 # add_executable(helper, "src/helper.cpp")
 
 # Link your application with OpenCV libraries
-# target_link_libraries(slam ${OpenCV_LIBS})
-# target_link_libraries(slam sfml-graphics sfml-window sfml-system sfml-audio)
+target_link_libraries(slam ${OpenCV_LIBS})
+target_link_libraries(slam sfml-graphics sfml-window sfml-system sfml-audio)
