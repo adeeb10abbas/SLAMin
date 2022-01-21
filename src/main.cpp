@@ -14,19 +14,19 @@ int main(int argc,char* argv[]){
     cout << "Error opening video stream or file" << endl;
     return -1;
   }
-	
+	featureProcessing fp;
   while(1){
 
     Mat frame;
     // Capture frame-by-frame
     cap >> frame;
- 
     // If the frame is empty, break immediately
     if (frame.empty())
       break;
-
+    auto adeeb = fp.processImage(frame);
+    cout << adeeb[0];
     // Display the resulting frame
-    imshow( "Frame", frame);
+    imshow("Frame", frame);
 
     // Press  ESC on keyboard to exit
     char c=(char)waitKey(25);

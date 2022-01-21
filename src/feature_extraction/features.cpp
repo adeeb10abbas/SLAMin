@@ -1,7 +1,6 @@
-
+#include "iostream"
 #include "features.hpp"
 using namespace cv;
-
 /**
  * @brief Takes in a frame from a video and computes the keypoint 
  * and descripter using the FAST algorithm. Check - ]
@@ -11,9 +10,9 @@ using namespace cv;
  * @return void 
  */
 
-FeatureProcessing::FeatureProcessing(){
-    
-}
-void FeatureProcessing::ProcessImage(Mat& image1){
-    
-}
+// inline void featureProcessing::processImage(Mat& image1){
+//     std::vector<KeyPoint>& kp;
+//     cv::OutPutArray dp;
+//     Feature2D::detectAndCompute(image1, kp, dp);
+//     cout << kp;
+// }
