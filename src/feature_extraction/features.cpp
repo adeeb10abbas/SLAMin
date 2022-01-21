@@ -1,14 +1,19 @@
 
-#include "opencv2/opencv_modules.hpp"
-
+#include "features.hpp"
 using namespace cv;
 
-class FeatureProcessing{
- public:
-    FeatureProcessing(vector<KeyPoint>* kp){        
-    }
-    virtual void ProcessImage(){
-    }
- private:
-    int minHessian_ = 400;
+/**
+ * @brief Takes in a frame from a video and computes the keypoint 
+ * and descripter using the FAST algorithm. Check - ]
+ * https://docs.opencv.org/4.x/df/dd2/tutorial_py_surf_intro.html 
+ * 
+ * @param image1 
+ * @return void 
+ */
+
+FeatureProcessing::FeatureProcessing(){
+    
+}
+void FeatureProcessing::ProcessImage(Mat& image1){
+    
 }

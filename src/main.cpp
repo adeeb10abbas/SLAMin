@@ -1,15 +1,12 @@
 #include "opencv2/opencv.hpp"
 #include "iostream"
+#include "feature_extraction/features.hpp"
 
 using namespace cv;
 using namespace std;
 
 int main(int argc,char* argv[]){
   
-//   if (argv[1] != std::string("yes")){
-//       throw std::runtime_error("Enter a valid path to a video file. \n");
-//   };
-
   VideoCapture cap(argv[1]); 
    
   // Check if camera opened successfully
