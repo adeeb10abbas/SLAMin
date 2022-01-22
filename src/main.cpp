@@ -4,10 +4,12 @@
 
 using namespace cv;
 using namespace std;
+#define radius 1
 
 int main(int argc,char* argv[]){
-  
-  VideoCapture cap(argv[1]); 
+  cv::Scalar blue(0,0,255);
+
+  VideoCapture cap("videos/test_countryroad.mp4"); 
    
   // Check if camera opened successfully
   if(!cap.isOpened()){
@@ -21,10 +23,19 @@ int main(int argc,char* argv[]){
     // Capture frame-by-frame
     cap >> frame;
     // If the frame is empty, break immediately
+    Mat grayscale;
+    cvtColor(frame, grayscale, COLOR_BGR2GRAY);
+
     if (frame.empty())
       break;
-    auto adeeb = fp.processImage(frame);
-    cout << adeeb[0];
+
+    vector<cv::Point2f> corners = fp.processImage(grayscale);
+    #pragma omp for
+    for (size_t i = 0; i < corners.size(); i++)
+    {
+      cv::circle(frame, corners.at(i), radius, blue, FILLED);
+    }
+    
     // Display the resulting frame
     imshow("Frame", frame);
 

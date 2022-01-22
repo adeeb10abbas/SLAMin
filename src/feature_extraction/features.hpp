@@ -22,14 +22,11 @@ using namespace std;
 class featureProcessing{
  public:
    featureProcessing(){}
-   std::pair processImage(Mat& image1) {
-      detector->detectAndCompute(image1, Mat(), kp, dp);
-      cout << 0;
-      cout << (float)dp.at<float>(0,0);
-      return std::make_pair(kp, dp);
-    }
- private:
-   Ptr<Feature2D> detector = SIFT::create(800.0);
-   cv::Mat dp;
-   vector<KeyPoint> kp;
+   std::vector<cv::Point2f> processImage(Mat& image) {
+    std::vector<cv::Point2f> corners;
+    cv::goodFeaturesToTrack(image,corners, 500, 0.01, 10);
+    return corners;
+  }
+//  private:
+  //  Ptr<Feature2D> detector = SIFT::create(800.0);
 };
