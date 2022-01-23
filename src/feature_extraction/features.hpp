@@ -17,6 +17,11 @@
 #include <opencv2/core/utility.hpp>
 #include <opencv2/core/ocl.hpp>
 
+// using cv::xfeatures2d::BriefDescriptorExtractor;
+// using cv::xfeatures2d::SURF;
+// using cv::xfeatures2d::DAISY;
+// using cv::xfeatures2d::FREAK;
+
 using namespace cv;
 using namespace std;
 
@@ -25,7 +30,7 @@ class featureProcessing{
    featureProcessing(){}
    std::vector<cv::Point2f> processImage(Mat& image) {
     std::vector<cv::Point2f> corners;
-    vector<float> descriptors;
+    Mat descriptors;
     cv::goodFeaturesToTrack(image, corners, 3000, 0.01, 4);
     // Generate ORBs from keypoints
     std::vector<cv::KeyPoint> kp;
@@ -40,4 +45,7 @@ class featureProcessing{
   }
  private:
   cv::Ptr<cv::DescriptorExtractor> detector = cv::ORB::create();
+  // Ptr<Feature2D> detector = ORB::create();
+  // Ptr<cv::xfeatures2d::BriefDescriptorExtractor> detectors = 
+    // cv::xfeatures2d::BriefDescriptorExtractor::create(64);
 };
