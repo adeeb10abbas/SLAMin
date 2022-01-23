@@ -24,11 +24,17 @@ class featureProcessing{
    featureProcessing(){}
    std::vector<cv::Point2f> processImage(Mat& image) {
     std::vector<cv::Point2f> corners;
+    vector<float> descriptors;
     cv::goodFeaturesToTrack(image, corners, 3000, 0.01, 4);
-    // Generate ORBS
-    
+    // Generate ORBs from keypoints
+    vector<KeyPoint> kp;
+    for (size_t i = 0; i < corners.size() ; i++)
+    {
+      kp.emplace_back(KeyPoint(corners.at(i), 20));
+    }
+    detector->compute(image, kp, descriptors);
     return corners;
   }
-//  private:
-  //  Ptr<Feature2D> detector = SIFT::create(800.0);
+ private:
+  Ptr<ORB> detector = ORB::create();
 };
