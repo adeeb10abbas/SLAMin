@@ -40,12 +40,13 @@ class featureProcessing{
     cv::goodFeaturesToTrack(image, corners, 3000, 0.01, 4);
     // Generate ORBs from keypoints
     std::vector<cv::KeyPoint> keypoints;
-    #pragma omp for
-    for (vector<Point2f>::const_iterator it = corners.begin();
-        it != corners.end(); it++) {    
-      cv::KeyPoint kp(*it, 8);
-      keypoints.push_back(kp);
-    }
+    // #pragma omp for
+    // for (vector<Point2f>::const_iterator it = corners.begin();
+    //     it != corners.end(); it++) {    
+    //   cv::KeyPoint kp(*it, 2.0);
+    //   keypoints.push_back(kp);
+    // }
+    cv::KeyPoint::convert(corners, keypoints);
     detector_->compute(image, keypoints, descriptors); // calculate descriptors from keypoints here
     // Now we have both keypoints and descriptors for this frame. {kps, descriptors}
 
