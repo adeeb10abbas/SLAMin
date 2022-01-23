@@ -25,27 +25,41 @@
 using namespace cv;
 using namespace std;
 
+struct kpDesc {
+  std::vector<cv::KeyPoint> kps;
+  Mat desc;
+};
+
 class featureProcessing{
  public:
    featureProcessing(){}
-   std::vector<cv::Point2f> processImage(Mat& image) {
+   std::vector<cv::KeyPoint> processImage(Mat& image) {
     std::vector<cv::Point2f> corners;
     Mat descriptors;
     cv::goodFeaturesToTrack(image, corners, 3000, 0.01, 4);
     // Generate ORBs from keypoints
-    std::vector<cv::KeyPoint> kp;
+    std::vector<cv::KeyPoint> keypoints;
     #pragma omp for
     for (size_t i = 0; i < corners.size() ; i++)
     {
-      kp.emplace_back(KeyPoint(corners.at(i), 20));
+      keypoints.emplace_back(KeyPoint(corners.at(i), 1));
     }
-    detector->compute(image, kp, descriptors);
-    // the computation was the issue we'll figure this out later. 
-    return corners;
+    detector_->compute(image, keypoints, descriptors); // calculate descriptors from keypoints here
+    // Now we have both keypoints and descriptors for this frame. {kps, descriptors}
+
+    // do some matching and then return kps and des 
+    // [DONE] and draw them on the frame 
+    if (!prev_.desc.empty())
+    {
+     // do the matching here.  
+    }
+    
+    prev_.kps = keypoints;
+    prev_.desc = descriptors; 
+
+    return keypoints;
   }
  private:
-  cv::Ptr<cv::DescriptorExtractor> detector = cv::ORB::create();
-  // Ptr<Feature2D> detector = ORB::create();
-  // Ptr<cv::xfeatures2d::BriefDescriptorExtractor> detectors = 
-    // cv::xfeatures2d::BriefDescriptorExtractor::create(64);
+  cv::Ptr<cv::DescriptorExtractor> detector_ = cv::ORB::create();
+  struct kpDesc prev_;
 };

@@ -27,15 +27,12 @@ int main(int argc,char* argv[]){
     if (frame.empty())
       break;
 
-    vector<cv::Point2f> corners = fp.processImage(grayscale);
-    #pragma omp for
-    for (size_t i = 0; i < corners.size(); i++)
-    {
-      cv::circle(frame, corners.at(i), radius, cv::Scalar (255, 0, 0), FILLED);
-    }
+    vector<KeyPoint> kps = fp.processImage(grayscale);
+    cv::Mat pointmat;
+    cv::drawKeypoints(frame, kps, pointmat, CV_RGB(0,0, 255));
     
     // Display the resulting frame
-    imshow("Frame", frame);
+    imshow("Frame", pointmat);
 
     // Press  ESC on keyboard to exit
     char c=(char)waitKey(25);
