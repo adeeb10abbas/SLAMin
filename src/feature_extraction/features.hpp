@@ -34,15 +34,17 @@ class featureProcessing{
  public:
    featureProcessing(){}
    std::vector<cv::KeyPoint> processImage(Mat& image) {
+
     std::vector<cv::Point2f> corners;
     Mat descriptors;
     cv::goodFeaturesToTrack(image, corners, 3000, 0.01, 4);
     // Generate ORBs from keypoints
     std::vector<cv::KeyPoint> keypoints;
     #pragma omp for
-    for (size_t i = 0; i < corners.size() ; i++)
-    {
-      keypoints.emplace_back(KeyPoint(corners.at(i), 1));
+    for (vector<Point2f>::const_iterator it = corners.begin();
+        it != corners.end(); it++) {    
+      cv::KeyPoint kp(*it, 8);
+      keypoints.push_back(kp);
     }
     detector_->compute(image, keypoints, descriptors); // calculate descriptors from keypoints here
     // Now we have both keypoints and descriptors for this frame. {kps, descriptors}
