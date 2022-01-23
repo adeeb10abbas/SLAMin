@@ -40,21 +40,18 @@ class featureProcessing{
     cv::goodFeaturesToTrack(image, corners, 3000, 0.01, 4);
     // Generate ORBs from keypoints
     std::vector<cv::KeyPoint> keypoints;
-    // #pragma omp for
-    // for (vector<Point2f>::const_iterator it = corners.begin();
-    //     it != corners.end(); it++) {    
-    //   cv::KeyPoint kp(*it, 2.0);
-    //   keypoints.push_back(kp);
-    // }
-    cv::KeyPoint::convert(corners, keypoints);
+    cv::KeyPoint::convert(corners, keypoints); 
     detector_->compute(image, keypoints, descriptors); // calculate descriptors from keypoints here
     // Now we have both keypoints and descriptors for this frame. {kps, descriptors}
 
-    // do some matching and then return kps and des cv2.BFMatcher()
+    // [DONE] do some matching and then return kps and des cv2.BFMatcher()
     // [DONE] and draw them on the frame 
+    // read this - https://docs.opencv.org/3.4/dc/dc3/tutorial_py_matcher.html
+    // put this in the CPP file not the header lmao
+    std::vector<std::vector<DMatch>> matches;
     if (!prev_.desc.empty())
     {
-     // do the matching here.  
+      matcher_.knnMatch(descriptors, prev_.desc, matches, 2); //matching done. 
     }
     
     prev_.kps = keypoints;
@@ -65,4 +62,5 @@ class featureProcessing{
  private:
   cv::Ptr<cv::DescriptorExtractor> detector_ = cv::ORB::create();
   struct kpDesc prev_;
+  cv::BFMatcher matcher_;
 };
