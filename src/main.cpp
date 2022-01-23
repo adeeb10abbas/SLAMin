@@ -4,10 +4,10 @@
 
 using namespace cv;
 using namespace std;
-#define radius 1
+#define radius 3
 
 int main(int argc,char* argv[]){
-  cv::Scalar blue(0,0,255);
+
 
   VideoCapture cap("videos/test_countryroad.mp4"); 
    
@@ -33,7 +33,7 @@ int main(int argc,char* argv[]){
     #pragma omp for
     for (size_t i = 0; i < corners.size(); i++)
     {
-      cv::circle(frame, corners.at(i), radius, blue, FILLED);
+      cv::circle(frame, corners.at(i), radius, cv::Scalar (255, 0, 0), FILLED);
     }
     
     // Display the resulting frame

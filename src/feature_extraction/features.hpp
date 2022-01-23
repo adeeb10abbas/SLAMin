@@ -24,7 +24,9 @@ class featureProcessing{
    featureProcessing(){}
    std::vector<cv::Point2f> processImage(Mat& image) {
     std::vector<cv::Point2f> corners;
-    cv::goodFeaturesToTrack(image,corners, 500, 0.01, 10);
+    cv::goodFeaturesToTrack(image, corners, 3000, 0.01, 4);
+    // Generate ORBS
+    
     return corners;
   }
 //  private:
