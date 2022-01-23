@@ -47,7 +47,7 @@ class featureProcessing{
     detector_->compute(image, keypoints, descriptors); // calculate descriptors from keypoints here
     // Now we have both keypoints and descriptors for this frame. {kps, descriptors}
 
-    // do some matching and then return kps and des 
+    // do some matching and then return kps and des cv2.BFMatcher()
     // [DONE] and draw them on the frame 
     if (!prev_.desc.empty())
     {
