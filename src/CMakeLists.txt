@@ -18,4 +18,3 @@ add_executable(slam ${slam_source_files})
 
 # Link your application with OpenCV libraries
 target_link_libraries(slam ${OpenCV_LIBS})
-target_link_libraries(slam sfml-graphics sfml-window sfml-system sfml-audio)
