@@ -7,10 +7,8 @@ using namespace std;
 #define radius 3
 
 int main(int argc,char* argv[]){
-
-
-  VideoCapture cap("videos/test_countryroad.mp4"); 
-   
+  
+  VideoCapture cap("videos/test_countryroad.mp4");
   // Check if camera opened successfully
   if(!cap.isOpened()){
     cout << "Error opening video stream or file" << endl;

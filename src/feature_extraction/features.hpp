@@ -19,6 +19,7 @@
 
 using namespace cv;
 using namespace std;
+
 class featureProcessing{
  public:
    featureProcessing(){}
@@ -27,14 +28,16 @@ class featureProcessing{
     vector<float> descriptors;
     cv::goodFeaturesToTrack(image, corners, 3000, 0.01, 4);
     // Generate ORBs from keypoints
-    vector<KeyPoint> kp;
+    std::vector<cv::KeyPoint> kp;
+    #pragma omp for
     for (size_t i = 0; i < corners.size() ; i++)
     {
       kp.emplace_back(KeyPoint(corners.at(i), 20));
     }
     detector->compute(image, kp, descriptors);
+    // the computation was the issue we'll figure this out later. 
     return corners;
   }
  private:
-  Ptr<ORB> detector = ORB::create();
+  cv::Ptr<cv::DescriptorExtractor> detector = cv::ORB::create();
 };
