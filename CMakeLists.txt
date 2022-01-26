@@ -11,4 +11,16 @@ message(STATUS "version: ${OpenCV_VERSION}")
 message(STATUS "libraries: ${OpenCV_LIBS}")
 message(STATUS "include path: ${OpenCV_INCLUDE_DIRS}")
 
-add_subdirectory(src)
+file(GLOB src_files 
+     "src/*.cpp"
+)
+set(SOURCES ${src_files})
+set(LIBRARY_NAME processing_engine)
+
+add_library(${LIBRARY_NAME} include/features.hpp ${SOURCES})
+target_include_directories(${LIBRARY_NAME} PUBLIC ${PROJECT_SOURCE_DIR}/include)
+
+add_executable(main app/main.cpp)
+target_link_libraries(processing_engine ${OpenCV_LIBS})
+target_link_libraries(main PRIVATE ${LIBRARY_NAME})
+
