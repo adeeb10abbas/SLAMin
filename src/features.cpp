@@ -20,33 +20,36 @@ std::vector<cv::KeyPoint> featureProcessing::processImage(Mat& image){
     cv::KeyPoint::convert(corners, keypoints); 
 
     detector_->compute(image, keypoints, descriptors); // calculate descriptors from keypoints here
+    
     std::vector<std::vector<DMatch>> matches;
     std::vector<std::vector<DMatch>> good_matches;
+    
     if (!prev_.desc.empty()) {
       matcher_.knnMatch(descriptors, prev_.desc, matches, 2); //matching done. 
     }
     
-    for (vector<vector<cv::DMatch> >::iterator matchIterator= matches.begin();
-         matchIterator!= matches.end(); ++matchIterator) {
-        if ((*matchIterator)[0].distance < 0.7f * (*matchIterator)[1].distance) {
-            good_matches.push_back((*matchIterator)[0]);
-        }
-    }
-
+    // for (auto matchIterator= matches.begin();
+    //      matchIterator!= matches.end(); ++matchIterator) {
+    //     if ((*matchIterator)[0].distance < 0.7f * (*matchIterator)[1].distance) {
+    //         good_matches.push_back((&matchIterator)[0]);
+    //     }
+    // }
+    
+    // Let's make them good later. Let's go with ALL the matches for now
     prev_.kps = keypoints;
     prev_.desc = descriptors; 
 
     vector<cv::Point2f> src_pts, dst_pts;
-    for (vector<cv::DMatch>::iterator it= good_matches.begin();
-         it!= good_matches.end(); ++it)
+    for (auto it= matches.begin();
+         it!= matches.end(); ++it)
     {
         // Get the position of left keypoints
-        float x= keypoints[it->queryIdx].pt.x;
-        float y= keypoints[it->queryIdx].pt.y;
+        float x= keypoints[it.queryIdx].pt.x;
+        float y= keypoints[it.queryIdx].pt.y;
         src_pts.push_back(cv::Point2f(x,y));
         // Get the position of right keypoints
-        float x_= prev_.kps[it->trainIdx].pt.x;
-        float y_= prev_.kps[it->trainIdx].pt.y;
+        float x_= prev_.kps[it.trainIdx].pt.x;
+        float y_= prev_.kps[it.trainIdx].pt.y;
         dst_pts.push_back(cv::Point2f(x_,y_));
     }
 
