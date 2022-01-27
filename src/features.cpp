@@ -38,34 +38,15 @@ std::vector<cv::KeyPoint> featureProcessing::processImage(Mat& image){
 
     vector<cv::Point2f> src_pts, dst_pts;
     for (int i = 0; i < good_matches.size(); i++) {
-        // float y= keypoints[it->queryIdx].pt.y;
         src_pts.push_back(keypoints[good_matches[i].queryIdx].pt);
-        // // Get the position of right keypoints
-        // float x_= prev_.kps[it->trainIdx].pt.x;
-        // float y_= prev_.kps[it->trainIdx].pt.y;
         dst_pts.push_back(prev_.kps[good_matches[i].trainIdx].pt);
     }
-    
-    // for (auto it= matches->begin();
-    //      it!= matches->end(); ++it)
-    // {
-    //     // Get the position of left keypoints
-    //     float x= keypoints[it->queryIdx].pt.x;
-    //     float y= keypoints[it->queryIdx].pt.y;
-    //     src_pts.push_back(cv::Point2f(x,y));
-    //     // Get the position of right keypoints
-    //     float x_= prev_.kps[it->trainIdx].pt.x;
-    //     float y_= prev_.kps[it->trainIdx].pt.y;
-    //     dst_pts.push_back(cv::Point2f(x_,y_));
-    // }
 
-
-    // auto _test_ = calculateCamMat(image, prev_.kps, keypoints);
+    auto _test_ = calculateCamMat(image, prev_.kps, keypoints);
     return keypoints;
   }
 //points 1 and point 2 would be - prev_.keypoints and keypoints 
-
-Mat featureProcessing::calculateCamMat (const Mat& image, std::vector<cv::KeyPoint>& points1,
+Mat featureProcessing::calculateCamMat (const Mat& image,   std::vector<Point2f> src_pts,
                     std::vector<cv::KeyPoint>& points2) {
   std::vector<Point2f> src_pts;
   std::vector<Point2f> dst_pts;
