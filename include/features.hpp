@@ -33,8 +33,12 @@ struct kpDesc {
 class featureProcessing{
  public:
    std::vector<cv::KeyPoint> processImage(Mat& image);
+   Mat calculateCamMat (const Mat& image, std::vector<cv::KeyPoint>& points1,
+                    std::vector<cv::KeyPoint>& points2);
  private:
   cv::Ptr<cv::DescriptorExtractor> detector_ = cv::ORB::create();
+  // cv::Ptr<cv::FeatureDetector> detector_ = new cv::SiftFeatureDetector();
+
   struct kpDesc prev_;
   cv::BFMatcher matcher_;
 };
