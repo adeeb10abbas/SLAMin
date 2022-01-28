@@ -15,6 +15,7 @@ std::vector<cv::KeyPoint> featureProcessing::processImage(Mat& image){
     std::vector<cv::Point2f> corners;
     Mat descriptors;
     cv::goodFeaturesToTrack(image, corners, 3000, 0.01, 4);
+    vector<cv::Point2f> src_pts, dst_pts;
     // Generate ORBs from keypoints
     std::vector<cv::KeyPoint> keypoints;
     cv::KeyPoint::convert(corners, keypoints); 
@@ -26,32 +27,29 @@ std::vector<cv::KeyPoint> featureProcessing::processImage(Mat& image){
     
     if (!prev_.desc.empty()) {
       matcher_.knnMatch(descriptors, prev_.desc, matches, 2); //matching done. 
-    }
-    for (int i = 0; i < matches.size(); i++) {
-      if (matches.at(i)[0].distance<0.7f *(matches.at(i)[1].distance)) {
-        good_matches.emplace_back(matches.at(i)[0]);
+      
+      for (int i = 0; i < matches.size(); i++) {
+        if (matches.at(i)[0].distance<0.7f *(matches.at(i)[1].distance)) {
+          good_matches.emplace_back(matches.at(i)[0]);
+          }
+        }
+
+      for (int i = 0; i < good_matches.size(); i++) {
+        src_pts.push_back(keypoints[good_matches[i].queryIdx].pt);
+        dst_pts.push_back(prev_.kps[good_matches[i].trainIdx].pt);
       }
+      auto _test_ = calculateCamMat(image, src_pts, dst_pts);
     }
-        
+
     prev_.kps = keypoints;
     prev_.desc = descriptors; 
 
-    vector<cv::Point2f> src_pts, dst_pts;
-    for (int i = 0; i < good_matches.size(); i++) {
-        src_pts.push_back(keypoints[good_matches[i].queryIdx].pt);
-        dst_pts.push_back(prev_.kps[good_matches[i].trainIdx].pt);
-    }
-
-    auto _test_ = calculateCamMat(image, prev_.kps, keypoints);
+    
     return keypoints;
   }
 //points 1 and point 2 would be - prev_.keypoints and keypoints 
-Mat featureProcessing::calculateCamMat (const Mat& image,   std::vector<Point2f> src_pts,
-                    std::vector<cv::KeyPoint>& points2) {
-  std::vector<Point2f> src_pts;
-  std::vector<Point2f> dst_pts;
-  cv::KeyPoint::convert(points1, src_pts);
-  cv::KeyPoint::convert(points2, dst_pts);
+Mat featureProcessing::calculateCamMat (const Mat& image, std::vector<Point2f> src_pts,
+                    std::vector<Point2f> dst_pts) {
  // Calculating the middle of the image.
  int x = image.size().width/2;
  int y = image.size().height/2;
@@ -60,14 +58,14 @@ Mat featureProcessing::calculateCamMat (const Mat& image,   std::vector<Point2f>
  double fov = 80 * (M_PI/180);
  double f_x = x / tan(fov/2);
  double f_y = y / tan(fov/2);
- 
- // Computing F matrix using RANSAC
-  // cv::Mat fundamental = cv::findFundamentalMat(
-  //         cv::Mat(src_pts), cv::Mat(dst_pts), // matching points
-  //         FM_RANSAC,  // RANSAC method
-  //         5.0); // distance
 
-// cout << fundamental << std::endl;
-cv::Mat fundamental;
+ // Computing F matrix using RANSAC
+  cv::Mat fundamental = cv::findFundamentalMat(
+          cv::Mat(src_pts),cv::Mat(dst_pts), // matching points
+          FM_RANSAC,  // RANSAC method
+          5.0); // distance
+    cout <<  fundamental << endl;
+
+// cv::Mat fundamental;
 return fundamental;
 }

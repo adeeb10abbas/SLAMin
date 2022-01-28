@@ -27,8 +27,8 @@ struct kpDesc {
 class featureProcessing{
  public:
    std::vector<cv::KeyPoint> processImage(Mat& image);
-   Mat calculateCamMat (const Mat& image, std::vector<cv::KeyPoint>& points1,
-                    std::vector<cv::KeyPoint>& points2);
+   Mat calculateCamMat (const Mat& image, std::vector<Point2f> src_pts,
+                                           std::vector<Point2f> dst_pts);
  private:
   cv::Ptr<cv::DescriptorExtractor> detector_ = cv::ORB::create();
 
