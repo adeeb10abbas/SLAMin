@@ -10,6 +10,9 @@
 #include <opencv2/core/core.hpp>
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/features2d.hpp>
+// #include <open3d/Open3D.h>
+#include <matplot/matplot.h>
+
 
 #include <opencv2/calib3d.hpp>
 #include <opencv2/imgproc.hpp>
@@ -29,6 +32,7 @@ class featureProcessing{
    std::vector<cv::KeyPoint> processImage(Mat& image);
    Mat calculateCamMat (const Mat& image, std::vector<Point2f> src_pts,
                                            std::vector<Point2f> dst_pts);
+   void tranRotEssential(Mat& essential);                                    
  private:
   cv::Ptr<cv::DescriptorExtractor> detector_ = cv::ORB::create();
 

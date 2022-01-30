@@ -69,3 +69,45 @@ Mat featureProcessing::calculateCamMat (const Mat& image, std::vector<Point2f> s
 // cv::Mat fundamental;
 return fundamental;
 }
+// void featureProcessing::tranRotEssential(Mat& image, Mat& fundamental) {
+//   Mat w;
+//   cv::SVD::compute(essential, w);
+// }
+
+
+/* What I want to do today - 
+1) Figure out what to do with the Fundamental Matrix and the Mask
+2) Implement the whole thing
+3) Work on Visualization of 3d points in Open3D
+*/
+
+// A function to draw some bs from the fundamental matrix? 
+static void Draw(string window_name, int height, int width, int left, int top){
+  //  vis.CreateVisualizerWindow(window_name, width, height, left, top, true);
+
+  // // Add the provided geometries to the canvas
+  // for (const auto &geom : geometry_ptrs) {
+  //     vis.AddGeometry(geom);
+  // }
+
+  // // Change the render options
+  // o3d::visualization::RenderOption &render_options = vis.GetRenderOption();
+  // render_options.SetPointSize(point_size);
+
+  // // Change the viewpoint of the camera
+  // o3d::visualization::ViewControl &view_control = vis.GetViewControl();
+  // if (lookat != nullptr) {
+  //     view_control.SetLookat(*lookat);
+  // }
+  // if (up != nullptr) {
+  //     view_control.SetUp(*up);
+  // }
+  // if (front != nullptr) {
+  //     view_control.SetFront(*front);
+  // }
+  // if (zoom != nullptr) {
+  //     view_control.SetZoom(*zoom);
+  // }
+
+  // vis.Run();
+}
