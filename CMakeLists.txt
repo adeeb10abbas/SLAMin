@@ -7,6 +7,11 @@ set(CMAKE_CXX_COMPILER "/usr/bin/g++")
 project(SLAMin CXX)
 
 find_package(OpenCV REQUIRED)
+find_package(PCL REQUIRED)
+include_directories( ${PCL_INCLUDE_DIRS} )
+add_definitions( ${PCL_DEFINITIONS} )
+link_directories( ${PCL_LIBRARY_DIRS} )
+
 
 message(STATUS "OpenCV library status:")
 message(STATUS "version: ${OpenCV_VERSION}")
@@ -18,7 +23,7 @@ file(GLOB src_files
 )
 set(SOURCES ${src_files})
 set(LIBRARY_NAME processing_engine)
-add_subdirectory(matplotplusplus)
+#add_subdirectory(matplotplusplus)
 
 add_library(${LIBRARY_NAME} include/features.hpp ${SOURCES})
 target_include_directories(${LIBRARY_NAME} PUBLIC ${PROJECT_SOURCE_DIR}/include)
@@ -26,6 +31,7 @@ target_include_directories(${LIBRARY_NAME} PUBLIC ${PROJECT_SOURCE_DIR}/include)
 add_executable(main app/main.cpp)
 target_link_libraries(processing_engine ${OpenCV_LIBS})
 target_link_libraries(processing_engine ${Open3DHelper})
-target_link_libraries(processing_engine matplot)
+#target_link_libraries(processing_engine matplot)
 
+target_link_libraries(processing_engine ${PCL_LIBRARY_DIRS})
 target_link_libraries(main PRIVATE ${LIBRARY_NAME})
