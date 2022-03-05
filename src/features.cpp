@@ -60,16 +60,19 @@ Mat featureProcessing::calculateCamMat (const Mat& image, std::vector<Point2f> s
  double f_y = y / tan(fov/2);
  cv::Mat mask;
  // Computing F matrix using RANSAC
-  cv::Mat fundamental = cv::findEssentialMat(
+  cv::Mat E = cv::findEssentialMat(
           src_pts, dst_pts, // matching points
           cv::Mat_<double>::eye(3,3),
           cv::RANSAC, 0.999, 1.0, mask); // distance
-    cout <<  fundamental << endl;
+    cout <<  E << endl;
   
-  // cv::recoverPose
-
-// cv::Mat fundamental;
-return fundamental;
+  // Recovering Pose
+  cv::Mat R, t;
+  cv::recoverPose(E, src_pts, dst_pts, cv::Mat_<double>::eye(3,3), R, t, mask);
+  // We get the rotation and translation out of here.
+  
+  
+return E;
 }
 // void featureProcessing::tranRotEssential(Mat& image, Mat& fundamental) {
 //   Mat w;
