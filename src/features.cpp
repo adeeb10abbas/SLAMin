@@ -58,13 +58,15 @@ Mat featureProcessing::calculateCamMat (const Mat& image, std::vector<Point2f> s
  double fov = 80 * (M_PI/180);
  double f_x = x / tan(fov/2);
  double f_y = y / tan(fov/2);
-
+ cv::Mat mask;
  // Computing F matrix using RANSAC
-  cv::Mat fundamental = cv::findFundamentalMat(
-          cv::Mat(src_pts),cv::Mat(dst_pts), // matching points
-          FM_RANSAC,  // RANSAC method
-          5.0); // distance
+  cv::Mat fundamental = cv::findEssentialMat(
+          src_pts, dst_pts, // matching points
+          cv::Mat_<double>::eye(3,3),
+          cv::RANSAC, 0.999, 1.0, mask); // distance
     cout <<  fundamental << endl;
+  
+  // cv::recoverPose
 
 // cv::Mat fundamental;
 return fundamental;
@@ -83,31 +85,31 @@ return fundamental;
 
 // A function to draw some bs from the fundamental matrix? 
 static void Draw(string window_name, int height, int width, int left, int top){
-  //  vis.CreateVisualizerWindow(window_name, width, height, left, top, true);
+// const double max_z = 1.0e4;
+// 	for (int y = 0; y < xyz.rows; y++)
+// 	{
+// 		for (int x = 0; x < xyz.cols; x++)
+// 		{
+// 			Vec3f point = xyz.at<Vec3f>(y, x);
+// 			if (fabs(point[2] - max_z) < FLT_EPSILON || fabs(point[2]) > max_z) continue;
 
-  // // Add the provided geometries to the canvas
-  // for (const auto &geom : geometry_ptrs) {
-  //     vis.AddGeometry(geom);
-  // }
+// 			double X = point[0];
+// 			double Y = point[1];
+// 			double Z = point[2];
 
-  // // Change the render options
-  // o3d::visualization::RenderOption &render_options = vis.GetRenderOption();
-  // render_options.SetPointSize(point_size);
+// 			//pcl::PointXYZRGB rgbPoint;
+// 			pcl::PointXYZ rgbPoint;
+// 			rgbPoint.x = X;
+// 			rgbPoint.y = Y;
+// 			rgbPoint.z = Z;
 
-  // // Change the viewpoint of the camera
-  // o3d::visualization::ViewControl &view_control = vis.GetViewControl();
-  // if (lookat != nullptr) {
-  //     view_control.SetLookat(*lookat);
-  // }
-  // if (up != nullptr) {
-  //     view_control.SetUp(*up);
-  // }
-  // if (front != nullptr) {
-  //     view_control.SetFront(*front);
-  // }
-  // if (zoom != nullptr) {
-  //     view_control.SetZoom(*zoom);
-  // }
+// 			//Vec3b colorLeft = img1.at<Vec3b>(y, x);
 
-  // vis.Run();
+// 			//uint32_t rgb = (static_cast<uint32_t>(colorLeft.val[2]) << 16 |
+// 			//	static_cast<uint32_t>(colorLeft.val[1]) << 8 | static_cast<uint32_t>(colorLeft.val[0]));
+// 			//rgbPoint.rgb = *reinterpret_cast<float*>(&rgb);
+
+// 			point_cloud->points.push_back(rgbPoint);
+// 		}
+// 	}
 }
