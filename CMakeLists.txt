@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.7)
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_C_COMPILER "/usr/bin/gcc")
 set(CMAKE_CXX_COMPILER "/usr/bin/g++")
 
@@ -8,6 +8,8 @@ project(SLAMin CXX)
 
 find_package(OpenCV REQUIRED)
 find_package(PCL REQUIRED)
+find_package (Eigen3 3.3)
+
 include_directories( ${PCL_INCLUDE_DIRS} )
 add_definitions( ${PCL_DEFINITIONS} )
 link_directories( ${PCL_LIBRARY_DIRS} )
@@ -23,7 +25,6 @@ file(GLOB src_files
 )
 set(SOURCES ${src_files})
 set(LIBRARY_NAME processing_engine)
-#add_subdirectory(matplotplusplus)
 
 add_library(${LIBRARY_NAME} include/features.hpp ${SOURCES})
 target_include_directories(${LIBRARY_NAME} PUBLIC ${PROJECT_SOURCE_DIR}/include)
@@ -31,7 +32,8 @@ target_include_directories(${LIBRARY_NAME} PUBLIC ${PROJECT_SOURCE_DIR}/include)
 add_executable(main app/main.cpp)
 target_link_libraries(processing_engine ${OpenCV_LIBS})
 target_link_libraries(processing_engine ${Open3DHelper})
-#target_link_libraries(processing_engine matplot)
-
 target_link_libraries(processing_engine ${PCL_LIBRARY_DIRS})
+target_link_libraries(processing_engine Eigen3::Eigen)
+
 target_link_libraries(main PRIVATE ${LIBRARY_NAME})
+
