@@ -71,36 +71,17 @@ Mat featureProcessing::calculateCamMat (const Mat& image, std::vector<Point2f> s
   cv::recoverPose(E, src_pts, dst_pts, cv::Mat_<double>::eye(3,3), R, t, mask);
   // We get the rotation and translation out of here.
   
-  cout << "R: " << R << endl;
+  // cout << "R: " << R << endl;
   // Mat b= Mat::zeros();
   Mat I = Mat_<double>::eye(3,3);
   auto r_ = R*I;
-  cout << "R: " << r_ << endl;
-
+  // cout << "R: " << r_ << endl;
+  vector<double> camera_coords = {t.at<double>(0,0), t.at<double>(0,1), t.at<double>(0,2)};
+  cout << camera_coords.at(0) << endl; // Work on 
   // auto R_ = Eigen::Matrix4d::Identity();
   
 return E;
 }
-// void featureProcessing::tranRotEssential(Mat& image, Mat& fundamental) {
-//   Mat w;
-//   cv::SVD::compute(essential, w);
-// }
 
-
-/* What I want to do today - 
-1) Figure out what to do with the Fundamental Matrix and the Mask
-2) Implement the whole thing
-3) Work on Visualization of 3d points in PCL
-*/
-
-// A function to draw some bs from the fundamental matrix? 
-static void Draw(string window_name, int height, int width, int left, int top){
-const double max_z = 1.0e4;
-	for (int y = 0; y < 5; y++)
-	{
-		for (int x = 0; x < 5; x++)
-		{
-      pcl::PointXYZ min_point_AABB;
-		}
-	}
-}
+// Start plotting the camera_coordinates in the visualizer in PCL on another thread. 
+// Should be fun. 
