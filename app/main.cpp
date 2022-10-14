@@ -2,8 +2,8 @@
 #include "iostream"
 #include "features.hpp"
 
-using namespace cv;
-using namespace std;
+
+using std::cout;
 #define radius 3
 
 int main(int argc,char* argv[]){
@@ -16,18 +16,18 @@ int main(int argc,char* argv[]){
   }
 	featureProcessing fp;
   while(1){
-
-    Mat frame;
+    
+    cv::Mat frame;
     // Capture frame-by-frame
     cap >> frame;
     // If the frame is empty, break immediately
-    Mat grayscale;
-    cvtColor(frame, grayscale, COLOR_BGR2GRAY);
+    cv::Mat grayscale;
+    cv::cvtColor(frame, grayscale, COLOR_BGR2GRAY);
 
     if (frame.empty())
       break;
 
-    vector<KeyPoint> kps = fp.processImage(grayscale);
+    std::vector<cv::KeyPoint> kps = fp.processImage(grayscale);
     cv::Mat pointmat;
     cv::drawKeypoints(frame, kps, pointmat, CV_RGB(0,0, 255));
     

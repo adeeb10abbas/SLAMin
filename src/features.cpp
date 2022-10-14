@@ -4,9 +4,6 @@
 #include <pcl/io/pcd_io.h>
 # include <Eigen/Core>
 
-using namespace cv;
-using namespace Eigen;
-
 std::vector<cv::KeyPoint> featureProcessing::processImage(Mat& image){
     std::vector<cv::Point2f> corners;
     Mat descriptors;
