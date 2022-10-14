@@ -1,5 +1,5 @@
 
-*.swp
+**/**.swp
 CMakeLists.txt.user
 CMakeCache.txt
 CMakeFiles
